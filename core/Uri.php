@@ -83,7 +83,14 @@ class Uri{
       if( preg_match($pattern, $this->uri['path'], $matches) ):
         $path = explode('/',$matches[0]);        
         return $path;
-      endif; 
+      endif;
+
+      $pattern = '/(\w+-?\w+)/'; 
+
+      if( preg_match($pattern, $this->uri['path'], $matches) ):
+        $path = explode('/',$matches[0]);
+        return $path;
+      endif;   
 
     endif;
     
