@@ -25,9 +25,21 @@ class Usuario{
   }
 
   public function view($id){
-
-    $usuarios = $this->DB->consultar('usuarios', '*', "`id`='".$id."'");
-
+    /**
+     * Método consultar() é possível de erro
+     * então trato essa possível falha capturando
+     * o erro para mais tarde implementar um log,
+     * por enquanto apenas retorno FALSE.
+     * Caso contrário segue o fluxo e retorna um 
+     * array[0] ou array[0][0]
+     */
+    try{
+      $usuarios = $this->DB->consultar('usuarios', '*', "`id`='".$id."'");
+    }catch(\Exception $e){
+      $erro = $e->getMessage() . " na linha " . $e->getLine() .
+      ' da classe DB';       
+      return FALSE;
+    }
     return $usuarios;
 
   }
