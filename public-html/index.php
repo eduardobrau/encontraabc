@@ -27,11 +27,14 @@ else:
   $nameSpace = "app\\controllers\\".ucfirst($controlador);
   
   if( class_exists($nameSpace) ):
-    new $nameSpace($Controller->getAction(),$params);
-  else:
-    echo "<pre>"; print_r('Erro'); echo "</pre>";
+    try{
+      new $nameSpace($Controller->getAction(),$params);
+    }catch(\Exception $e){
+      $view = new View;
+      $view->load('erro/error', $e->getMessage());
+    }
   endif;
-  
+
 endif;
 
 
