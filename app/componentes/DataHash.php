@@ -1,7 +1,7 @@
 <?php
 // Create a password class to handle management of this:
 // https://www.ibm.com/developerworks/br/library/wa-php-renewed_2/index.html
-class HashId {
+class DataHash {
 
 	/*
 		Cria um Salt qualquer manual para ser reforçado
@@ -25,10 +25,10 @@ class HashId {
 }
  
 // Hash the password:
-// $hash = HashId::hash('1');
+// $hash = DataHash::hash('1');
 // var_dump($hash);
 // Check against an entered password (This example will fail to verify)
-// if (HashId::verify('1', $hash)) {
+// if (DataHash::verify('1', $hash)) {
 //   echo "Correct Password!\n";
 // } else {
 //   echo "Incorrect login attempt!\n";
