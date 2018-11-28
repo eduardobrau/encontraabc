@@ -122,7 +122,7 @@ class Uri{
    *   [ul] => idfu
    * )
    */
-  public function getParams(){
+  public function getParams(){       
     if( !empty($this->uri['query']) ):
       parse_str($this->uri['query'], $this->params);
       return $this->params;

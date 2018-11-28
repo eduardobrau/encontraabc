@@ -14,13 +14,10 @@
         $table = '<table class="table table-striped table-bordered">';
         $table .= '<tbody>';
         foreach ($data as $key => $valueArray) {
-          foreach ($valueArray as $field => $data) {
-            $table .= '<tr>';
-            $table .= '<td>' .$field. '</td>';
-            $table .= '<td>' .$data. '</td>';
-            $table .= '</tr>';
-          }
-          
+          $table .= '<tr>';
+          $table .= '<td>' .$key. '</td>';
+          $table .= '<td>' .$valueArray. '</td>';
+          $table .= '</tr>';
         }
         $table .= '</tbody>';
         $table .= '</table>';
