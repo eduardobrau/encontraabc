@@ -5,10 +5,12 @@ namespace app\componentes;
 class DB{
 
 	private $host = "127.0.0.1:3306";
-	private $database = "app_php";
+	private $database = "encontra_abc";
 	private $usuario = "root";
-	private $senha = "12345";
+	private $senha = "";
 	private $conexao;
+	public $numRows;
+	private $lastID;
 
 	/**
 	 * Método construtor, retorna
@@ -37,39 +39,49 @@ class DB{
 	 */
 	private function conectar(){
 		$this->conexao = mysqli_connect($this->host, $this->usuario, $this->senha, $this->database);
+								 
 		if ( !$this->conexao ) {
-			throw new \Exception('Não foi possível conectar ao mysql: ' . mysqli_connect_error());
+			throw new \Exception('Não foi possível conectar ao mysql:1000: ' . mysqli_connect_error());
 		}else{
-				$this->conexao->set_charset("utf8");           
+			$this->conexao->set_charset("utf8");           
 			return $this->conexao;
 		}
 	}
-	
+
 	public function consultar($table,$campos=FALSE,$where=FALSE,$like=FALSE,$order=FALSE,$limit=FALSE){
 			
-		$sql = 'SELECT ';
+		$this->sql = 'SELECT ';
 		
 		if( empty($campos) )
-			$sql.= '*';
+			$this->sql.= '*';
 		else
-		$sql.= $campos;
-		$sql.= ' FROM ' .'`'.$table.'`';
+		$this->sql.= $campos;
+		
+		$this->sql.= ' FROM ' .'`'.$table.'`';
 		
 		if( !empty($where) )
-			$sql.= ' WHERE ' .$where;
+			$this->sql.= ' WHERE ' .$where;
 		if( !empty($like) )
-			$sql.= ' LIKE ' .$like;
+			$this->sql.= ' LIKE ' .$like;
 		if( !empty($order) )
-			$sql.= ' ORDER BY ' .$order;
+			$this->sql.= ' ORDER BY ' .$order;
 		if( !empty($limit) )
-			$sql.= ' LIMIT ' .$limit;
+			$this->sql.= ' LIMIT ' .$limit;
+		//echo "<pre>"; print_r($this->sql); echo "</pre>";die;
 		
-		$result = $this->conexao->query($sql);
-							
-		if ( !$result->num_rows ):
-			throw new \Exception('Query não retornou nenhum registro: ' . 
-				$this->conexao->error);
-		elseif( $result->num_rows == 1 ):
+		$result = $this->conexao->query($this->sql);
+									
+		if ( $this->conexao->error ) {
+			throw new \Exception('Query inválida:1001: ' . $this->conexao->error);
+		}
+		
+		// Seta o número de registros da consulta atual
+		$this->numRows = $result->num_rows;
+
+
+		if ( !$this->numRows ):
+			return FALSE;
+		elseif( $this->numRows == 1 ):
 			$data = mysqli_fetch_assoc($result);
 		else:
 			while( $row =  mysqli_fetch_assoc($result) ){
@@ -104,59 +116,78 @@ class DB{
 
 	}
 
+
 	public function insert($table, $datas=array()){
-			
+		
 		foreach ($datas as $coluna => $valor) {
 			$colunas[]= '`'.$coluna.'`';
 			$valores[]= '\''.$valor.'\'';
+			$colVal []= '`'.$coluna.'` = ' . '\''.$valor.'\'';
 		}
-
 
 		$colunas = implode(', ' , $colunas);
 		$valores = implode(', ', $valores);
+		$colVal = implode(', ', $colVal);
 
-
-		$sql ='INSERT INTO `'.$table.'` ('.$colunas.') VALUES ('.$valores.')'; 
+		$sql ='INSERT INTO `'.$table.'` ('.$colunas.') VALUES ('.$valores.')' .
+		' ON DUPLICATE KEY UPDATE ' . $colVal; 
+		//echo "<pre>"; print_r($sql); echo "</pre>";die;
 		
 		if (!$this->conexao->query($sql)):
-			throw new \Exception(' Error: Não foi possível salvar os dados ' 
-			. $this->conexao->error . ' Verifique os parametros de conexão. ');
+			throw new \Exception(' Não foi possível salvar os dados:1002: ' 
+			. $this->conexao->error);
 		endif;
+
+		$this->lastID = $datas['id'];
+					
+		return $this->lastID;
 		
-		$last_id = $this->conexao->insert_id;
-						
-		return $last_id;
-			
 	}
-	
+
 	public function update($table, $datas=array(), $condition){
 			
 		$sql = "UPDATE `$table` SET ";
-		foreach ($datas as $coluna => $valor) {
+		
+		foreach($datas as $coluna => $valor){
 			$dados[] = ' `'.$coluna.'` = \''.$valor.'\' ';
 		}   
 		
 		$dados = implode(', ' , $dados);
 		$sql .= $dados; 
 		$sql .= 'WHERE '.$condition;
-		if ($this->conexao->query($sql)) {
-			$msg[0] = TRUE;
-			$msg[1] = "<div class=\"alert alert-success\"> <h2 class=\"text-center\">Atualização feita com sucesso!</h2> </div>";
-			return $msg;
-		} else {
-			$msg[0] = FALSE;
-			$msg[1] = "<div class=\" alert alert-danger text-center\"> <h2 class=\"text-center\">Error: " . $sql . "
-			" . $this->conexao->error . "</h2></div>";
-			return $msg;
-		}
+					
+		if( !$this->conexao->query($sql) ):
+			throw new \Exception(' Não foi possível atualizar os dados:1003: ' 
+				. $this->conexao->error);
+		endif; 
+
+		return TRUE;
 			
 	}
-	
-	public function deletar($tabela, $onde ) { 
-		$sql = "DELETE FROM `$tabela`  WHERE $onde ";
+
+	public function delete($tabela, $onde ) { 
+
+		$this->sql = "DELETE FROM `$tabela` WHERE $onde ";
+			
 		//Preparamos e executamos nossa query
-		$this->conexao->query($sql);
+		if ( !$this->conexao->query($this->sql) ) {
+			throw new \Exception('Registro inválido:1004: ' . $this->conexao->error);
+		}
+
+		return TRUE;
+
 	}
-	
+	// Retorna o total de linhas da última consulta
+	public function getNumRows(){
+		return $this->numRows;
+	}
+	// Retorna a última consulta SQL
+	public function getSql(){
+		return $this->sql;
+	}
+	// Retorna o último id inserido pela função insere()
+	public function getLastID(){
+		return $this->lastID;
+	}
 	
 }
