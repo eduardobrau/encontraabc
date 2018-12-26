@@ -4,10 +4,10 @@ namespace core;
 
 class Uri{
 
-  private $uri;
-  private $controller;
-  private $action;
-  private $params;
+  private static $uri;
+  private static $controller;
+  private static $action;
+  private static $params;
   private static $instance;
 
   /**
@@ -22,8 +22,8 @@ class Uri{
    * métodos.
     */
   private function __construct(){
-    $this->getUri();
-    $this->iniProps();
+    self::getUri();
+    self::iniProps();
   }
   /**
    * Para concretizar um objeto Singleton preciso garantir
@@ -54,18 +54,23 @@ class Uri{
    * )
    * 
   */
-  private function getUri(){
-    return $this->uri = parse_url($_SERVER['REQUEST_URI']);
+  private static function getUri(){
+    return self::$uri = parse_url($_SERVER['REQUEST_URI']);
   }
 
-  private function retPath(){
+  private static function retPath(){
 
-    if(!empty($this->uri['path'])):
+    if(!empty(self::$uri['path'])):
       
-      //echo "<pre>"; print_r($this->uri); echo "</pre>";
+      //echo "<pre>"; print_r(self::$uri); echo "</pre>";
       
       /***
        * Retorna parte do path, seguindo a expressão regular
+       * que pode ser interpretada assim, liga qualquer
+       * palavra no minimo 1 ou ilimitada vezes podendo 
+       * ter um - 1 vez ou seja opcional, seguido de qualquer
+       * palavra 1 ou ilimitada vezes sendo obrigatorio ter
+       * uma barra / seguido de qualquer palavra etc...
        * exemplo: 
        * http://encontraabc.localhost/usuarios/index/exemplo
        * [path] => /usuarios/index/exemplo
@@ -79,15 +84,18 @@ class Uri{
        *    [0] => usuarios
        *    [1] => index
        * )
+       * Caso case com o pattern acima retorna o primeiro
+       * indice dessa ocorrência ao método iniProps() na
+       * forma de um array, já que foi explodido as /
        */     
-      if( preg_match($pattern, $this->uri['path'], $matches) ):
+      if( preg_match($pattern, self::$uri['path'], $matches) ):
         $path = explode('/',$matches[0]);        
         return $path;
       endif;
 
       $pattern = '/(\w+-?\w+)/'; 
 
-      if( preg_match($pattern, $this->uri['path'], $matches) ):
+      if( preg_match($pattern, self::$uri['path'], $matches) ):
         $path = explode('/',$matches[0]);
         return $path;
       endif;   
@@ -95,22 +103,26 @@ class Uri{
     endif;
     
   }
-
-  private function iniProps(){
+  /**
+   * iniProps() é responsável por iniciar os valores do controller
+   * e da action caso o usuário a digitou se não seta a action
+   * como index por padrão.
+   */
+  private static function iniProps(){
     
-    $path = $this->retPath();
+    $path = self::retPath();
     //echo "<pre>"; print_r($path); echo "</pre>";   
-    $this->action = ( is_array($path) and (count($path) >= 2) ) ? strtolower($path[1]) : 'index';
-    $this->controller = ucfirst(strtolower($path[0]));
+    self::$action = ( is_array($path) and (count($path) >= 2) ) ? strtolower($path[1]) : 'index';
+    self::$controller = ucfirst(strtolower($path[0]));
     
   }
 
-  public function retController(){
-    return $this->controller;
+  public static function retController(){
+    return self::$controller;
   }
 
-  public function retAction(){
-    return $this->action;
+  public static function retAction(){
+    return self::$action;
   }
 
   /**
@@ -122,16 +134,19 @@ class Uri{
    *   [ul] => idfu
    * )
    */
-  public function getParams(){       
-    if( !empty($this->uri['query']) ):
-      parse_str($this->uri['query'], $this->params);
-      return $this->params;
+  public static function getParams(){       
+    if( !empty(self::$uri['query']) ):
+      parse_str(self::$uri['query'], self::$params);
+      return self::$params;
     endif;
   }
 
-  public function isHome(){
-    return ( !empty($this->uri) and $this->uri['path'] === '/' ) ? true : false;
+  public static function isHome(){
+    return ( !empty(self::$uri) and self::$uri['path'] === '/' ) ? true : false;
   }
 
+  public static function getUriPath(){
+    return self::$uri['path'];
+  }
 
 }
