@@ -1,20 +1,14 @@
 <?php
 
 namespace core;
-use app\componentes\Helpers;
-//use app\core\Uri;
+use core\Uri;
 
 class Controller{
 
-  private $controller;
-  private $action;
-  private $uri;
+  private static $controller;
+  private static $action;
+  private static $uri;
 
- /*  public static function initialize($uriPath){
-    $datas = Helpers::getController($uriPath);
-    $this->setController($datas['controller']);
-    $this->setAction($datas['action']);
-  } */
   /**
    * Instancia um objeto do tipo Uri e apartir deste método
    * é possível chamar outros métodos dentro ou fora do escopo
@@ -23,17 +17,17 @@ class Controller{
    * é formada por uma ou mais classes externas para formar
    * um objeto mais complexo.
    */
-  public function Uri(){
-    return $this->uri = Uri::getInstance();
+  public static function Uri(){
+    return self::$uri = Uri::getInstance();
   }
   
-  public function getController(){
-    $this->controller = $this->Uri()->retController();
-    return $this->controller;
+  public static function getController(){
+    self::$controller = self::Uri()::retController();
+    return self::$controller;
   }
 
-  public function getAction(){
-    return $this->action = $this->Uri()->retAction();
+  public static function getAction(){
+    return self::$action = self::Uri()::retAction();
   }
 
 
