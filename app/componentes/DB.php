@@ -81,8 +81,6 @@ class DB{
 
 		if ( !$this->numRows ):
 			return FALSE;
-		elseif( $this->numRows == 1 ):
-			$data = mysqli_fetch_assoc($result);
 		else:
 			while( $row =  mysqli_fetch_assoc($result) ){
 				$data[] = $row;
