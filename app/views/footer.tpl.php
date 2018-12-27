@@ -67,7 +67,7 @@
             <p class="text-left">&copy; <?php echo date('Y');?> APP PHP</p>
           </div>
           <div class="col-md-6">
-            <p class="text-right">Desenvolvido por <a href="http://www.edusites.com.br/">E <span class="ocult-text">desenvolvimento</span></a></p>
+            <p class="text-right">Desenvolvido por <a href="http://www.edusites.com.br/">Edusites <span class="ocult-text">desenvolvimento</span></a></p>
           </div>
         </div>
       </div>
