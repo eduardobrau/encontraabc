@@ -14,13 +14,13 @@
   <body>
   <header id="top-header">
     <div class="container">
-      <!--
+      
       <div class="row">
         <div class="col-6">
           <div id="icons-left">
             <ul class="icons-buttons">
               <li>
-                <a href="" class="btn btn-sm btn-success">Entrar</a>
+                <button id="loginModal" class="btn btn-sm btn-success">Entrar</button>
               </li>
             </ul>
           </div>
@@ -41,10 +41,10 @@
           </div>
         </div>
       </div>
-      -->
+    
     </div>
   </header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light main">
     <div class="container">
       <div class="es-navbar-header">
         <a class="navbar-brand" href="#">
