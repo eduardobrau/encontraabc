@@ -1,4 +1,5 @@
 <?php
+namespace app\componentes;
 // Create a password class to handle management of this:
 // https://www.ibm.com/developerworks/br/library/wa-php-renewed_2/index.html
 class DataHash {

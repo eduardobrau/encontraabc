@@ -6,7 +6,7 @@
  * @version 1.0
  * @link https://github.com/rafaelwendel/Data_Validator/
  */
-//namespace validator;
+namespace app\componentes;
 
 class DataValidator {
 
