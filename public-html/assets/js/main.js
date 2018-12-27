@@ -166,7 +166,7 @@ $(document).ready(function(){
 });
 
 $(document).on('click', 'button#modalDeleteData',function(){
-	alert('ok');
+	
 	datas = {
 		url: '/usuarios/delete',
 		id: $(this).attr('data-id'),
@@ -193,9 +193,9 @@ $(document).on('click', 'button#modalDeleteData',function(){
 			
 			$("#modalEncontraAbc").modal();
 			
-			/* setTimeout( () => {
+			setTimeout( () => {
 				location.reload();
-			},3000);	 */	
+			},2000);	
 		}
 	});
 
