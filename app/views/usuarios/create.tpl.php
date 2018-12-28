@@ -21,11 +21,11 @@ $controller = core\Uri::retController();
 
 							<label for="usuario">Usuário</label>
 
-							<input type="hidden" name="USUARIOS[id]" 
+							<input type="hidden" name="USUARIO[id]" 
 								class="form-control" pattern="[\d]{5,20}" 
 								value="<?=(!empty($_GET['id'])?$_GET['id']:NULL)?>">
 
-							<input type="text" name="USUARIOS[usuario]" 
+							<input type="text" name="USUARIO[usuario]" 
 								class="form-control" id="usuario" placeholder="Nome de Usuário" 
 								maxlength="100" required="required" pattern="[\w]+"
 								value="<?=(!empty($data[0]['usuario'])?$data[0]['usuario']:NULL)?>">
@@ -36,7 +36,7 @@ $controller = core\Uri::retController();
 
 							<label for="senha">Senha</label>
 
-							<input type="password" name="USUARIOS[senha]" 
+							<input type="password" name="USUARIO[senha]" 
 								class="form-control" id="senha" 
 								placeholder="Uma Senha Segura" minlength="8" maxlength="255" 
 								required="required" pattern="[\w\s]+">
@@ -47,7 +47,7 @@ $controller = core\Uri::retController();
 
 							<label for="email">Email</label>
 
-							<input type="email" name="USUARIOS[email]" 
+							<input type="email" name="USUARIO[email]" 
 								class="form-control" id="email" 
 								placeholder="Seu email" maxlength="145" 
 								required="required" 
