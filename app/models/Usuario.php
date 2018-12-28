@@ -41,13 +41,18 @@ class Usuario{
      * o erro para mais tarde implementar um log,
      * por enquanto apenas retorno FALSE.
      * Caso contrário segue o fluxo e retorna um 
-     * array[0] ou array[0][0]
+     * array[0]
      */
     try{
       $usuarios = $this->DB->consultar('usuarios', '*', "`id`='".$id."'");
     }catch(\Exception $e){
-      $erro = $e->getMessage() . " na linha " . $e->getLine() .
-      ' da classe DB';       
+      $error = $e->getMessage() . 
+      ' do arquivo '. $e->getFile() . 
+      ' na linha ' . $e->getLine() .
+      ' erro capturado no arquivo ' . __FILE__ . 
+      ' da linha ' . __LINE__ . '';
+      $ErrorLog = new ErrorLog;
+      $ErrorLog->writeLog($error);       
       return FALSE;
     }
     return $usuarios;
