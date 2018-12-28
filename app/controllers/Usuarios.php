@@ -41,11 +41,11 @@ class Usuarios{
 
   public function create($params=null){    
     
-    if( $_SERVER['REQUEST_METHOD'] === 'POST' and isset($_POST['USUARIOS']) ):
+    if( $_SERVER['REQUEST_METHOD'] === 'POST' and isset($_POST['USUARIO']) ):
       
       $Usuario = new Usuario;
       
-      if( $usuario = $Usuario->create($_POST['USUARIOS']) ):
+      if( $usuario = $Usuario->create($_POST['USUARIO']) ):
         return $this->View->load('info/sucesso',$usuario);
       else: 
         $data = [
