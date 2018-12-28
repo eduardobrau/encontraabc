@@ -2,17 +2,14 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="error-template" style="padding: 40px 15px;text-align: center;">
-          <h1>
-              Oops!</h1>
-          <h2>
-              404 Not Found</h2>
-          <div class="error-details">
-              Sorry, an error has occured, Requested page not found!
+        <div class="error-template" style="padding:6rem 1rem 3rem;text-align:center;">
+          <h2><?=(!empty($data['title']) ? $data['title'] : '404 Not Found')?></h2>
+          <div class="error-details alert alert-danger">
+            <?=(!empty($data['msg']) ? $data['msg'] : 'Desculpe, houve um erro, a pagina solicitada não existe!')?>
           </div>
           <div class="error-actions" style="margin-top:15px;margin-bottom:15px;">
-              <a href="/" class="btn btn-primary btn-lg" style="margin-right:10px;"><span class="glyphicon glyphicon-home"></span>
-                  Take Me Home </a><a href="http://www.jquery2dotnet.com" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-envelope"></span> Contact Support </a>
+            <a href="/" class="btn btn-primary btn-lg" style="margin-right:10px;"><span class="fa fa-home"></span>
+              Pagina Inicial </a><a href="http://www.jquery2dotnet.com" class="btn btn-success btn-lg"><span class="fa fa-envelope"></span> Contatar Suporte </a>
           </div>
         </div>
       </div>
