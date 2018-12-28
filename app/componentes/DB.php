@@ -48,6 +48,46 @@ class DB{
 		}
 	}
 
+	public function view($table,$campos=FALSE,$where=FALSE){
+			
+		$this->sql = 'SELECT ';
+		
+		if( empty($campos) )
+			$this->sql.= '*';
+		else
+		$this->sql.= $campos;
+		
+		$this->sql.= ' FROM ' .'`'.$table.'` ';
+		
+		if( !empty($where) )
+			$this->sql.= $where . ' LIMIT 1';
+				
+		$result = $this->conexao->query($this->sql);
+													
+		if ( $this->conexao->error ) 
+			throw new \Exception('Query inválida:1005: ' . $this->conexao->error);
+		
+		// Seta o número de registros da consulta atual
+		$this->numRows = $result->num_rows;
+		
+		/**
+		 * Caso a consulta retorne FALSE OU NULL,
+		 * será NULL quando não haver nenhuma correspondência
+		 * no Banco.
+		 */
+		if ( !$this->numRows ):
+			return FALSE;
+		else:
+			$data = mysqli_fetch_assoc($result);
+		endif;
+
+		// Free result set
+		mysqli_free_result($result);
+		
+		return $data;
+			
+	}
+
 	public function consultar($table,$campos=FALSE,$where=FALSE,$like=FALSE,$order=FALSE,$limit=FALSE){
 			
 		$this->sql = 'SELECT ';
