@@ -41,18 +41,36 @@ class Usuarios{
 
   public function create($params=null){    
     
-    if( $_SERVER['REQUEST_METHOD'] === 'POST' and isset($_POST['USUARIO']) ):
+    if( $_SERVER['REQUEST_METHOD'] === 'POST' and !empty($_POST['USUARIO']) ):
       
       $Usuario = new Usuario;
-      
-      if( $usuario = $Usuario->create($_POST['USUARIO']) ):
-        return $this->View->load('info/sucesso',$usuario);
+      // Caso as sessões não estejam habilita e nenhuma existir, inicio uma nova.
+      if( session_status() !== PHP_SESSION_ACTIVE ): 
+        session_start();
+      endif;
+      /**
+       * Caso esteja setada sei que houve um refresh da template sucesso,
+       * e impesso que os dados já setados via $_POST seja inseridos novamente.
+       */   
+      if( empty($_SESSION['id']) ):
+        
+        if( $usuario = $Usuario->create($_POST['USUARIO']) ):                            
+          return $this->View->load('info/sucesso',$usuario);
+        else: 
+          $data = [
+            'title' => 'Não foi possível salvar os dados',
+            'msg'   => 'Por favor contactar o administrador do sistema.'
+          ];
+          return $this->View->load('erro/error', $data);
+        endif;
+      /**
+       * Destruo a sessão atual, isso não limpa os dados já gravados
+       * da requisição atual, isso só vai ocorrer em uma nova requisição
+       * ao servidor, e neste caso quando eu redirecionar para index.
+       */  
       else: 
-        $data = [
-          'title' => 'Não foi possível salvar os dados',
-          'msg'   => 'Por favor contactar o administrador do sistema'
-        ];
-        return $this->View->load('erro/error', $data);
+        session_destroy();
+        header('Location: /usuarios/index');
       endif;
 
     endif;
@@ -71,7 +89,7 @@ class Usuarios{
        * em caso de sucesso, e caso não exista ou
        * houver um erro de SQL retornará FALSE.
        */
-      if( $usuario = $Usuario->showUser($params['id']) ):        
+      if( $usuario = $Usuario->edit($params['id']) ):        
         return $this->View->load('usuarios/create',$usuario);
       endif;
       
