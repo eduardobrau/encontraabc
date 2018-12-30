@@ -69,7 +69,7 @@ class DB{
 		
 		// Seta o número de registros da consulta atual
 		$this->numRows = $result->num_rows;
-		
+
 		/**
 		 * Caso a consulta retorne FALSE OU NULL,
 		 * será NULL quando não haver nenhuma correspondência
@@ -100,7 +100,7 @@ class DB{
 		$this->sql.= ' FROM ' .'`'.$table.'`';
 		
 		if( !empty($where) )
-			$this->sql.= ' WHERE ' .$where;
+			$this->sql.= ' ' . $where;
 		if( !empty($like) )
 			$this->sql.= ' LIKE ' .$like;
 		if( !empty($order) )
