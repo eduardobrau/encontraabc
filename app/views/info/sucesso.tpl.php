@@ -1,3 +1,9 @@
+<?php 
+$controller = core\Uri::retController(); 
+if( empty($_SESSION['id']) ){
+  $_SESSION['id'] = $data[0]['id'];
+}
+?>
 <section class="error" style="min-height:500px;">  
   <div class="container">
     <div class="row">
