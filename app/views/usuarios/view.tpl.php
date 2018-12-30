@@ -19,7 +19,7 @@ $controller = core\Uri::retController();
           if(!empty($data)):
             $table = '<table class="table table-striped table-bordered">';
             $table .= '<tbody>';
-            foreach ($data[0] as $key => $valueArray) {
+            foreach ($data as $key => $valueArray) {
               $table .= '<tr>';
               $table .= '<td>' .$key. '</td>';
               $table .= '<td>' .$valueArray. '</td>';
