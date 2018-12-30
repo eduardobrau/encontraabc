@@ -2,36 +2,17 @@
 
 namespace app\componentes;
 
-use app\componentes\DB;
 use app\componentes\ErrorLog;
 
 class GenerateUniqID{
+  /**
+   * Atributo que fará um apontamento para a posição da memória 
+   * onde outro objeto de conexão se encontra, podendo executar
+   * seus métodos. Técnica conhecida como associação. 
+   */ 
+  private static $DB;
 
-       
-  public function __construct(){
-
-    try{
-      $this->DB = new DB;
-    }catch(Exception $e){
-      $error = $e->getMessage() . 
-      ' do arquivo '. $e->getFile() . 
-      ' na linha ' . $e->getLine() .
-      ' erro capturado no arquivo ' . __FILE__ . 
-      ' da linha ' . __LINE__ . '';
-      $ErrorLog = new ErrorLog;
-      $ErrorLog->writeLog($error);
-      return FALSE;
-    }
-
-  }
-
-  public function getId(){
-  
-    return $this->generateUniqueRandomInt();
-
-  }
-
-  public function generateRandomDigits($length){
+  public static function generateRandomDigits($length){
     /**
      * Cria um array contendo uma faixa de elementos
      * de 1 até 10. Obs: $number[0]=1, $number[1]=2...
@@ -56,28 +37,45 @@ class GenerateUniqID{
     return (int)$digits;
 
   }
-
-  public function generateUniqueRandomInt($length = 15) {
-			
-    $randomDigit = $this->generateRandomDigits($length);
+  /**
+   * Note DB em frente a $db, isso se chama indução ao tipo
+   * caso o programador passe uma variável que não seja do 
+   * tipo DB um erro será gerado.
+   *  */ 
+  public static function uniqueRandomInt(DB $db,$table,$length = 15) {
+    
+    self::$DB = $db;
+    
+    $randomDigit = self::generateRandomDigits($length);
     //echo "<pre>"; print_r($randomDigit); echo "</pre>";die;
-    $this->DB->consultar('usuarios','`id`','id='.$randomDigit.''); 
+    try {
+      self::$DB->view($table,'`id`','WHERE id='.$randomDigit.'');
+    } catch (\Exception $e) {
+      $error = $e->getMessage() . 
+      ' do arquivo '. $e->getFile() . 
+      ' na linha ' . $e->getLine() .
+      ' erro capturado no arquivo ' . __FILE__ . 
+      ' da linha ' . __LINE__ . '';
+      $ErrorLog = new ErrorLog;
+      $ErrorLog->writeLog($error);
+      return FALSE;
+    }
     // Se não houver usuarios com o id gerado retorna $randomDigit
-    if(!$this->DB->getNumRows())
+    if(!self::$DB->getNumRows())
       return $randomDigit;
     else
-      return $this->generateUniqueRandomInt($length);
+      return self::uniqueRandomInt($length);
         
   }
 
-  public function generateUniqueRandomString($attribute, $length = 32) {
+  public static function uniqueRandomString($attribute, $length = 32) {
 			
     $randomString = Yii::$app->getSecurity()->generateRandomString($length);
         
-    if(!$this->findOne([$attribute => $randomString]))
+    if(!self::findOne([$attribute => $randomString]))
       return $randomString;
     else
-      return $this->generateUniqueRandomString($attribute, $length);
+      return self::uniqueRandomString($attribute, $length);
         
   }
 
