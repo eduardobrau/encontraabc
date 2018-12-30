@@ -44,7 +44,7 @@ class Usuario{
      * array[0]
      */
     try{
-      $usuarios = $this->DB->consultar('usuarios', '*', "`id`='".$id."'");
+      $usuarios = $this->DB->view('usuarios', '*', "WHERE `id`=$id");
     }catch(\Exception $e){
       $error = $e->getMessage() . 
       ' do arquivo '. $e->getFile() . 
@@ -62,9 +62,11 @@ class Usuario{
   public function create($data){
     
     if( !empty($data) ):
-            
-      $GenerateUniqID = new GenerateUniqID;
-      $user['id'] = ( empty($data['id']) ) ? $GenerateUniqID->getId() : $data['id']; 
+      // Caso algo dê errado getId() retorna FALSE e escreve no log de erros.
+      $user['id'] = ( empty($data['id']) ) ? GenerateUniqID::uniqueRandomInt($this->DB,'usuarios') : $data['id']; 
+      if( $user['id'] === FALSE ):
+        return FALSE;
+      endif;
       $user['usuario'] = strip_tags($data['usuario']);
       // Hash the password:
       $user['senha'] = strip_tags( DataHash::hash($data['senha']) );
@@ -103,7 +105,7 @@ class Usuario{
           $DataValidator->get_errors());
       endif;
       
-      $usuario = $this->DB->consultar('usuarios','`usuario`,`email`,`data_cadastro`','`id`='.$lastId.'');
+      $usuario = $this->DB->consultar('usuarios','`id`,`usuario`,`email`,`data_cadastro`',"WHERE `id`=$lastId");
             
       return $usuario;
 
@@ -113,7 +115,21 @@ class Usuario{
 
   public function edit($id){
     
-    $userExist = $this->DB->consultar('usuarios', '`id`', "`id`='".$id."'" );
+    try {
+      $usuario = $this->DB->view('usuarios', '*', "WHERE `id`=$id");
+      //echo "<pre>"; var_dump($lastId); echo "</pre>";die;
+    } catch (\Exception $e) {
+      $error = $e->getMessage() . 
+      ' do arquivo '. $e->getFile() . 
+      ' na linha ' . $e->getLine() .
+      ' erro capturado no arquivo ' . __FILE__ . 
+      ' da linha ' . __LINE__ . '';
+      $ErrorLog = new ErrorLog;
+      $ErrorLog->writeLog($error);
+      return FALSE;
+    }
+
+    return $usuario;
     
   }
 
@@ -135,24 +151,5 @@ class Usuario{
     
   }
 
-  public function showUser($id){
-    
-    try {
-      $usuario = $this->DB->consultar('usuarios', '*', "`id`='".$id."'" );
-      //echo "<pre>"; var_dump($lastId); echo "</pre>";die;
-    } catch (\Exception $e) {
-      $error = $e->getMessage() . 
-      ' do arquivo '. $e->getFile() . 
-      ' na linha ' . $e->getLine() .
-      ' erro capturado no arquivo ' . __FILE__ . 
-      ' da linha ' . __LINE__ . '';
-      $ErrorLog = new ErrorLog;
-      $ErrorLog->writeLog($error);
-      return FALSE;
-    }
-
-    return $usuario;
-    
-  }
 
 }
