@@ -28,7 +28,7 @@ $controller = core\Uri::retController();
 							<input type="text" name="USUARIO[usuario]" 
 								class="form-control" id="usuario" placeholder="Nome de Usuário" 
 								maxlength="100" required="required" pattern="[\w]+"
-								value="<?=(!empty($data[0]['usuario'])?$data[0]['usuario']:NULL)?>">
+								value="<?=(!empty($data['usuario'])?$data['usuario']:NULL)?>">
 
 						</div>
 
@@ -51,7 +51,7 @@ $controller = core\Uri::retController();
 								class="form-control" id="email" 
 								placeholder="Seu email" maxlength="145" 
 								required="required" 
-								value="<?=(!empty($data[0]['email'])?$data[0]['email']:NULL)?>">
+								value="<?=(!empty($data['email'])?$data['email']:NULL)?>">
 						</div>
 						
 						<a class="btn btn-success" href="/usuarios/index"> Voltar </a>
