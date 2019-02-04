@@ -58,18 +58,20 @@
           <ul class="navbar-nav mr-auto navbar-right">
             <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Empresa</a></li>
-            <li class="nav-item dropdown">
-              <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cadastrar</a>
-              <div class="dropdown-menu aria-labelledby="navbarDropdown"">
-                <a class="dropdown-item" href="#">Usuários</a>
-                <a class="dropdown-item" href="#">Serviços</a>
-                <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Listar</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdwon-item" href="#">One more separated link</a>
-              </div>
-            </li>
             <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
+            <?php if(app\componentes\Login::isLogged()):?>
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?=$_SESSION['usuario']?></a>
+                <div class="dropdown-menu aria-labelledby="navbarDropdown"">
+                  <a class="dropdown-item" href="#">Usuários</a>
+                  <a href="/site/logout" class="dropdown-item" href="#">Sair</a>
+                  <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Listar</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdwon-item" href="#">One more separated link</a>
+                </div>
+              </li>
+            <?php endif;?>
           </ul>
         </div>
       </div>
