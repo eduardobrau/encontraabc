@@ -72,7 +72,7 @@ $(document).ready(function(){
 					<div id="loginError" class="alert alert-danger"><strong>Erro!</strong></div>
 					
 					<div id="btnEntrar" class="form-group row">
-						<button id="confirmEntry" type="submit" class="btn btn-primary" name="login-button">Entrar</button>
+						<button id="confirmEntry" type="submit" class="btn btn-primary">Entrar</button>
 					</div>
 
 					<div class="form-group row field-loginform-rememberme">
