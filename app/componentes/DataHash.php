@@ -4,33 +4,16 @@ namespace app\componentes;
 // https://www.ibm.com/developerworks/br/library/wa-php-renewed_2/index.html
 class DataHash {
 
-	/*
-		Cria um Salt qualquer manual para ser reforçado
-		no uso da função hash que vai concatenar o Salt
-	*/
-  const SALT = 'A2_09)iP_)tu@';
-  //private $hash;
-
   /*Gera o hash com o algoritmo mais sofisticado
   do que os tradicionais md5 e sha1 já ultrapassados
   usando o algoritmo sha512 concatenando sempre com
   o mesmo Salt*/
   public static function hash($password) {
-    return hash('md5', self::SALT . $password);
+    return password_hash($password, PASSWORD_BCRYPT);
   }
 
   public static function verify($password, $hash) {
-    return ($hash == self::hash($password));
+    return (password_verify($password,$hash));
   }
 
 }
- 
-// Hash the password:
-// $hash = DataHash::hash('1');
-// var_dump($hash);
-// Check against an entered password (This example will fail to verify)
-// if (DataHash::verify('1', $hash)) {
-//   echo "Correct Password!\n";
-// } else {
-//   echo "Incorrect login attempt!\n";
-// }

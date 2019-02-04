@@ -61,6 +61,8 @@ class DB{
 		
 		if( !empty($where) )
 			$this->sql.= $where . ' LIMIT 1';
+		
+		//echo "<pre>"; print_r($this->sql); echo "</pre>";die;
 				
 		$result = $this->conexao->query($this->sql);
 													
