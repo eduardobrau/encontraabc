@@ -105,7 +105,7 @@ class Usuario{
           $DataValidator->get_errors());
       endif;
       
-      $usuario = $this->DB->consultar('usuarios','`id`,`usuario`,`email`,`data_cadastro`',"WHERE `id`=$lastId");
+      $usuario = $this->DB->view('usuarios','`id`,`usuario`,`email`,`data_cadastro`',"WHERE `id`=$lastId");
             
       return $usuario;
 
