@@ -3,7 +3,9 @@
 ini_set("display_errors", 'On');
 error_reporting(E_ALL);
 
-session_start();
+if( session_status() !== PHP_SESSION_ACTIVE ): 
+  session_start();
+endif;
 
 // Configurações de conexão
 define('CONFIG', [
