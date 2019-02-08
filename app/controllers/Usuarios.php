@@ -52,7 +52,7 @@ class Usuarios{
        * Caso esteja setada sei que houve um refresh da template sucesso,
        * e impesso que os dados já setados via $_POST seja inseridos novamente.
        */               
-      if( empty($_SESSION['id']) ):
+      if( empty($_SESSION['idSaved']) ):
         
         if( $usuario = $Usuario->create($_POST['USUARIO']) ):                            
           return $this->View->load('info/sucesso',$usuario);
@@ -69,7 +69,7 @@ class Usuarios{
          * ao servidor, e neste caso quando eu redirecionar para index.
          */  
       else: 
-        unset($_SESSION['id']);
+        unset($_SESSION['idSaved']);
         header('Location: /usuarios/index');
       endif;
 
