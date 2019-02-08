@@ -1,7 +1,7 @@
 <?php 
 $controller = core\Uri::retController(); 
-if( empty($_SESSION['id']) ){
-  $_SESSION['id'] = $data['id'];
+if( empty($_SESSION['idSaved']) ){
+  $_SESSION['idSaved'] = $data['id'];
 }
 ?>
 <section class="error" style="min-height:500px;">  
