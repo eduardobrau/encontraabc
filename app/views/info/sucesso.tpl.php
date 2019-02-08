@@ -1,7 +1,7 @@
 <?php 
 $controller = core\Uri::retController(); 
 if( empty($_SESSION['id']) ){
-  $_SESSION['id'] = $data[0]['id'];
+  $_SESSION['id'] = $data['id'];
 }
 ?>
 <section class="error" style="min-height:500px;">  
@@ -17,7 +17,7 @@ if( empty($_SESSION['id']) ){
                 if(isset($data)):
                   $table = '<table class="table table-striped table-bordered">';
                   $table .= '<tbody>';
-                  foreach ($data[0] as $key => $valueArray) {
+                  foreach ($data as $key => $valueArray) {
                     $table .= '<tr>';
                     $table .= '<td>' .$key. '</td>';
                     $table .= '<td>' .$valueArray. '</td>';
