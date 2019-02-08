@@ -7,7 +7,7 @@ class DB{
 	private $host = "127.0.0.1:3306";
 	private $database = "encontra_abc";
 	private $usuario = "root";
-	private $senha = "12345";
+	private $senha = "12345678";
 	private $conexao;
 	public $numRows;
 	private $lastID;

@@ -51,7 +51,7 @@ class Usuarios{
       /**
        * Caso esteja setada sei que houve um refresh da template sucesso,
        * e impesso que os dados já setados via $_POST seja inseridos novamente.
-       */   
+       */               
       if( empty($_SESSION['id']) ):
         
         if( $usuario = $Usuario->create($_POST['USUARIO']) ):                            
@@ -60,16 +60,16 @@ class Usuarios{
           $data = [
             'title' => 'Não foi possível salvar os dados',
             'msg'   => 'Por favor contactar o administrador do sistema.'
-          ];
+          ];          
           return $this->View->load('erro/error', $data);
         endif;
-      /**
-       * Destruo a sessão atual, isso não limpa os dados já gravados
-       * da requisição atual, isso só vai ocorrer em uma nova requisição
-       * ao servidor, e neste caso quando eu redirecionar para index.
-       */  
+        /**
+         * Destruo a sessão atual, isso não limpa os dados já gravados
+         * da requisição atual, isso só vai ocorrer em uma nova requisição
+         * ao servidor, e neste caso quando eu redirecionar para index.
+         */  
       else: 
-        session_destroy();
+        unset($_SESSION['id']);
         header('Location: /usuarios/index');
       endif;
 
