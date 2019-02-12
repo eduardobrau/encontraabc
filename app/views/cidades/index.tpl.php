@@ -1,5 +1,5 @@
 <?php 
-$controller = core\Uri::retController(); 
+$controller = core\Uri::retController();  
 //echo "<pre>"; print_r($uri); echo "</pre>";
 ?>
 
@@ -37,7 +37,7 @@ $controller = core\Uri::retController();
 								$table .= "<td>";
 								$table .= "<a class=\"btn btn-xs btn-success\" href='/" .strtolower($controller). "/view/?id=".$cidade['id']."'><span class='fa fa-eye'></span></a>";
 								$table .= "<a class=\"btn btn-xs btn-warning\" href='/" .strtolower($controller). "/edit/?id=".$cidade['id']."'><span class='fa fa-pencil'></span></a>";
-								$table .= "<button class=\"btn btn-xs btn-danger delete\" href='#' data-id=\"".$cidade['id']."\" data-title=\"".$cidade['cidade']."\"><span class='fa fa-trash'></span></button>";
+								$table .= "<button class=\"btn btn-xs btn-danger delete\" href='#' data-id=\"".$cidade['id']."\" data-url=\"/".strtolower($controller)."/delete\" data-title=\"".$cidade['cidade']."\"><span class='fa fa-trash'></span></button>";
 								$table .="</td>";
 								$table .= "</tr>";
 								$i++;
