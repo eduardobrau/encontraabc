@@ -32,7 +32,7 @@ if( empty($_SESSION['idSaved']) ){
               ?>
           </div>
           <div class="error-actions" style="margin-top:15px;margin-bottom:15px;">
-              <a href="/" class="btn btn-primary btn-lg" 
+              <a href="/<?=strtolower($controller)?>/index" class="btn btn-primary btn-lg" 
                 style="margin-right:10px;">
                 <span class="fa fa-home"></span>
                 Pagina Inicial 
