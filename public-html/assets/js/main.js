@@ -4,6 +4,7 @@ $(document).ready(function(){
 		
 		const id = $(this).attr('data-id');
 		const title = $(this).attr('data-title');
+		const url = $(this).attr('data-url');
 		console.log(id);
 
 		$('div.modal-footer .btn-danger').remove();
@@ -39,7 +40,10 @@ $(document).ready(function(){
 		.insertAfter('div.modal-footer .btn-default');
 
 		$("button#modalDeleteData")
-		.attr("data-id",id);
+		.attr({
+			'data-id':id,
+			'data-url':url
+		});
 		$("#modalEncontraAbc").modal('show');
 		
 	});	
@@ -168,7 +172,7 @@ $(document).ready(function(){
 $(document).on('click', 'button#modalDeleteData',function(){
 	
 	datas = {
-		url: '/usuarios/delete',
+		url: $(this).attr('data-url'),
 		id: $(this).attr('data-id'),
 	}
 
@@ -180,7 +184,6 @@ $(document).on('click', 'button#modalDeleteData',function(){
 		type: "POST",
 		data: { id },
 		success: function(data) {
-
 			$("#modalEncontraAbc h4#modal-title")
 			.html(data.title);
 			
